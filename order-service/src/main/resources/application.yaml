@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: order-service
+  jpa:
+    generate-ddl: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql://localhost:5433/orderdb
+    username: order
+    password: orderpassword
+    driver-class-name: org.postgresql.Driver
+
+server:
+  port: 8100

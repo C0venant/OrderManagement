@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: identity-service-auth
+          uri: lb://user-service
+          predicates:
+            - Path=/auth/**
+          filters:
+            - AuthenticationFilter
+
+        - id: identity-service-test
+          uri: lb://user-service
+          predicates:
+            - Path=/test
+          filters:
+            - AuthenticationFilter
+
+server:
+  port: 8765
