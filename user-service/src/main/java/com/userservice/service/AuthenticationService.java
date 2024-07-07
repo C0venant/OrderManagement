@@ -9,7 +9,7 @@ import com.userservice.dto.RegisterUserDto;
 import com.userservice.dto.TokenDto;
 import com.userservice.dto.UserDto;
 import com.userservice.entity.User;
-import com.userservice.security.JwtService;
+import com.userservice.security.service.JwtService;
 
 import lombok.RequiredArgsConstructor;
 

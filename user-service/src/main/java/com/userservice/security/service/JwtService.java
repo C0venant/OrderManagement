@@ -1,4 +1,4 @@
-package com.userservice.security;
+package com.userservice.security.service;
 
 import java.security.Key;
 import java.util.Date;
