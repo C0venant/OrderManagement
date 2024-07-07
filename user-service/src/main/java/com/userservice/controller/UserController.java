@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 public class UserController {
-
+//@Cacheable("myCache")
     private final UserService userService;
 
     @PutMapping("/me")

@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public ErrorDto handleUserNotFoundException(RuntimeException ex) {
+    public ErrorDto handleUserNotFoundException(Exception ex) {
         return ErrorDto.of(ex.getMessage());
     }
 

@@ -2,12 +2,15 @@ package com.userservice.service;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.userservice.dto.AuthenticateUserDto;
 import com.userservice.dto.RegisterUserDto;
 import com.userservice.dto.TokenDto;
 import com.userservice.dto.UserDto;
+import com.userservice.dto.UserEmailDto;
 import com.userservice.entity.User;
 import com.userservice.security.service.JwtService;
 
@@ -23,6 +26,8 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
+    private final UserDetailsService userDetailsService;
+
     public UserDto register(RegisterUserDto registerUserDto) {
         return UserDto.of(userService.registerUser(registerUserDto));
     }
@@ -35,5 +40,14 @@ public class AuthenticationService {
         User user = userService.getUserByEmail(authenticateUserDto.email());
         String jwt = jwtService.generateToken(user);
         return new TokenDto(jwt);
+    }
+
+    public UserEmailDto validateToken(String token) {
+        String userEmail = jwtService.extractUsername(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+        if (jwtService.isTokenValid(token, userDetails)) {
+            return new UserEmailDto(userEmail);
+        }
+        throw new RuntimeException("Invalid token");
     }
 }
