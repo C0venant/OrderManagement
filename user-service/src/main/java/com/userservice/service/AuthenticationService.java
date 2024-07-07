@@ -2,16 +2,14 @@ package com.userservice.service;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.userservice.dto.AuthenticationRequest;
-import com.userservice.dto.AuthenticationResponse;
-import com.userservice.dto.RegisterRequest;
-import com.userservice.dto.RegisterResponse;
-import com.userservice.entity.Role;
+import com.userservice.dto.AuthenticateUserDto;
+import com.userservice.dto.RegisterUserDto;
+import com.userservice.dto.TokenDto;
+import com.userservice.dto.UserDto;
 import com.userservice.entity.User;
-import com.userservice.repository.UserRepository;
+import com.userservice.security.JwtService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,32 +17,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final UserRepository userRepository;
-
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
     private final JwtService jwtService;
 
     private final AuthenticationManager authenticationManager;
 
-    public RegisterResponse register(RegisterRequest registerRequest) {
-        User user = new User();
-        user.setName(registerRequest.name());
-        user.setEmail(registerRequest.email());
-        user.setPassword(passwordEncoder.encode(registerRequest.password()));
-        user.setRole(Role.USER);
-        userRepository.save(user);
-        return new RegisterResponse(jwtService.generateToken(user));
+    public UserDto register(RegisterUserDto registerUserDto) {
+        return UserDto.of(userService.addUser(registerUserDto));
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
+    public TokenDto authenticate(AuthenticateUserDto authenticateUserDto) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                authenticationRequest.email(),
-                authenticationRequest.password()
+                authenticateUserDto.email(),
+                authenticateUserDto.password()
         ));
-        User user = userRepository.findByEmail(authenticationRequest.email()).orElseThrow();
+        User user = userService.getUserByEmail(authenticateUserDto.email());
         String jwt = jwtService.generateToken(user);
-        return new AuthenticationResponse(jwt);
+        return new TokenDto(jwt);
     }
-
 }

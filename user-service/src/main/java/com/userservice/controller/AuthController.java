@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.userservice.dto.AuthenticationRequest;
-import com.userservice.dto.AuthenticationResponse;
-import com.userservice.dto.RegisterRequest;
-import com.userservice.dto.RegisterResponse;
+import com.userservice.dto.AuthenticateUserDto;
+import com.userservice.dto.RegisterUserDto;
+import com.userservice.dto.TokenDto;
+import com.userservice.dto.UserDto;
 import com.userservice.service.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,12 +22,12 @@ public class AuthController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> registerUser(@RequestBody RegisterRequest registerRequest) {
-        return ResponseEntity.ok(authenticationService.register(registerRequest));
+    public ResponseEntity<UserDto> registerUser(@RequestBody RegisterUserDto registerUserDto) {
+        return ResponseEntity.ok(authenticationService.register(registerUserDto));
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
-        return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
+    public ResponseEntity<TokenDto> authenticate(@RequestBody AuthenticateUserDto authenticateUserDto) {
+        return ResponseEntity.ok(authenticationService.authenticate(authenticateUserDto));
     }
 }

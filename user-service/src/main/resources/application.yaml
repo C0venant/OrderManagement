@@ -15,6 +15,6 @@ spring:
 server:
   port: 8000
 
-logging:
-  level:
-    org.springframework.security: DEBUG
+jwt:
+  secret: "MIICzTBLBgkqhkiG9w0BBQ0wPjApBgkqhkiG9w0BBQwwHAQI1M8uVZ0qac0CAggA"
+  expiration: 1440000  # 1000 * 60 * 24
