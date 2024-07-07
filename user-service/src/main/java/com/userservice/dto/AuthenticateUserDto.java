@@ -1,4 +1,6 @@
 package com.userservice.dto;
 
-public record AuthenticateUserDto(String email, String password) {
+import jakarta.validation.constraints.NotBlank;
+
+public record AuthenticateUserDto(@NotBlank String email, @NotBlank String password) {
 }

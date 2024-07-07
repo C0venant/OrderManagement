@@ -25,12 +25,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public User addUser(RegisterUserDto registerUserDto) {
+        log.info("Adding user with email: {}", registerUserDto.email());
         checkIfUserExists(registerUserDto.email());
         User user = new User();
         BeanUtils.copyProperties(registerUserDto, user, "password");
         user.setPassword(passwordEncoder.encode(registerUserDto.password()));
         user.setRole(Role.USER);
-        return userRepository.save(user);
+        User result = userRepository.save(user);
+        log.info("User added with id: {}", result.getId());
+        return result;
     }
 
     public User getUserByEmail(String email) {

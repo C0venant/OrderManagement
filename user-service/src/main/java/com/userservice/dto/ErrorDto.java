@@ -1,10 +1,21 @@
 package com.userservice.dto;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
-public record ErrorDto(String message, LocalDateTime timestamp) {
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+public record ErrorDto(
+        String message,
+        LocalDateTime timestamp,
+        @JsonInclude(JsonInclude.Include.NON_NULL)Map<String, String> validationResult
+) {
 
     public static ErrorDto of(String message) {
-        return new ErrorDto(message, LocalDateTime.now());
+        return new ErrorDto(message, LocalDateTime.now(), null);
+    }
+
+    public static ErrorDto of(String message, Map<String, String> validationResult) {
+        return new ErrorDto(message, LocalDateTime.now(), validationResult);
     }
 }

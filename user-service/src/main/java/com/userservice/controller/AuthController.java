@@ -12,6 +12,7 @@ import com.userservice.dto.TokenDto;
 import com.userservice.dto.UserDto;
 import com.userservice.service.AuthenticationService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -22,12 +23,12 @@ public class AuthController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> registerUser(@RequestBody RegisterUserDto registerUserDto) {
+    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody RegisterUserDto registerUserDto) {
         return ResponseEntity.ok(authenticationService.register(registerUserDto));
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<TokenDto> authenticate(@RequestBody AuthenticateUserDto authenticateUserDto) {
+    public ResponseEntity<TokenDto> authenticate(@Valid @RequestBody AuthenticateUserDto authenticateUserDto) {
         return ResponseEntity.ok(authenticationService.authenticate(authenticateUserDto));
     }
 }
