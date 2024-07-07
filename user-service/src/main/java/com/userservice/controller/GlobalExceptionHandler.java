@@ -33,6 +33,13 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ErrorDto handleUserNotFoundException(RuntimeException ex) {
+        return ErrorDto.of(ex.getMessage());
+    }
+
+    @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorDto handleValidationExceptions(MethodArgumentNotValidException ex) {

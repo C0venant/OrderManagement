@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.userservice.dto.CreateUserDto;
 import com.userservice.dto.RegisterUserDto;
+import com.userservice.dto.UpdateUserDto;
 import com.userservice.dto.UserDto;
 import com.userservice.entity.Role;
 import com.userservice.entity.User;
@@ -43,6 +45,17 @@ public class UserService {
     }
 
     @Transactional
+    public UserDto updateUser(UpdateUserDto updateUserDto) {
+        String email = getCurrentUserEmail();
+        User user = getUserByEmail(email);
+        if (isNewEmail(user.getEmail(), updateUserDto.email())) {
+            checkIfUserExists(updateUserDto.email()); //check if new email is in use
+        }
+        BeanUtils.copyProperties(updateUserDto, user);
+        return UserDto.of(user);
+    }
+
+    @Transactional
     public UserDto createUser(CreateUserDto createUserDto) {
         log.info("Creating user: {}", createUserDto);
         checkIfUserExists(createUserDto.email());
@@ -64,6 +77,9 @@ public class UserService {
     public UserDto updateUser(UserDto userDto) {
         log.info("Updating user: {}", userDto);
         User user = findUserById(userDto.id());
+        if (isNewEmail(user.getEmail(), userDto.email())) {
+            checkIfUserExists(userDto.email()); //check if new email is in use
+        }
         BeanUtils.copyProperties(userDto, user);
         return userDto;
     }
@@ -83,6 +99,14 @@ public class UserService {
     public User getUserByEmail(String email) {
         return  findUserByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(email));
+    }
+
+    private boolean isNewEmail(String email, String newEmail) {
+        return !email.equalsIgnoreCase(newEmail);
+    }
+
+    private String getCurrentUserEmail() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     private User findUserById(Long id) {
