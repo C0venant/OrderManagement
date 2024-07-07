@@ -12,5 +12,8 @@ spring:
     password: orderpassword
     driver-class-name: org.postgresql.Driver
 
+  kafka:
+    bootstrap-servers: localhost:9092
+
 server:
   port: 8100
