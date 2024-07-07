@@ -3,7 +3,15 @@ package com.userservice.dto;
 import com.userservice.entity.Role;
 import com.userservice.entity.User;
 
-public record UserDto(Long id, String name, String email, Role role) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record UserDto(
+        @NotNull Long id,
+        @NotBlank String name,
+        @NotBlank String email,
+        @NotNull Role role
+) {
 
     public static UserDto of(User user) {
         return new UserDto(user.getId(),

@@ -24,7 +24,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public UserDto register(RegisterUserDto registerUserDto) {
-        return UserDto.of(userService.addUser(registerUserDto));
+        return UserDto.of(userService.registerUser(registerUserDto));
     }
 
     public TokenDto authenticate(AuthenticateUserDto authenticateUserDto) {

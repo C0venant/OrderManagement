@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.userservice.dto.ErrorDto;
 import com.userservice.exception.EmailAlreadyInUseException;
+import com.userservice.exception.UserNotFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -21,6 +22,13 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(EmailAlreadyInUseException.class)
     public ErrorDto handleEmailAlreadyInUseException(EmailAlreadyInUseException ex) {
+        return ErrorDto.of(ex.getMessage());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(UserNotFoundException.class)
+    public ErrorDto handleUserNotFoundException(UserNotFoundException ex) {
         return ErrorDto.of(ex.getMessage());
     }
 
