@@ -1,3 +1,5 @@
+CREATE SEQUENCE user_seq START 1;
+
 CREATE TABLE "user"
 (
     id          SERIAL,
@@ -7,5 +9,3 @@ CREATE TABLE "user"
     role    VARCHAR(255),
     PRIMARY KEY (id)
 );
-
-CREATE SEQUENCE user_seq START 1;

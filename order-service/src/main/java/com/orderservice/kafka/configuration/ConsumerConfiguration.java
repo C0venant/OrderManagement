@@ -16,11 +16,9 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
-import com.orderservice.kafka.event.UserEvent;
-
 @EnableKafka
 @Configuration
-public class KafkaConsumerConfig {
+public class ConsumerConfiguration {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
