@@ -1,8 +1,8 @@
-CREATE SEQUENCE user_seq START 1;
+CREATE SEQUENCE user_sequence INCREMENT BY 10;
 
 CREATE TABLE "user"
 (
-    id          SERIAL,
+    id          BIGINT NOT NULL,
     name        VARCHAR(255),
     email       VARCHAR(255),
     password    VARCHAR(255),

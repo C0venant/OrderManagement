@@ -15,5 +15,11 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
 
+message:
+  group: orderGroup
+  topic:
+    create-user: createUser
+    remove-user: removeUser
+
 server:
   port: 8100

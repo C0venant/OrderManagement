@@ -1,12 +1,12 @@
-CREATE SEQUENCE order_seq START 1;
+CREATE SEQUENCE order_sequence INCREMENT BY 10;
 
 CREATE TABLE "user"
 (
-    id  SERIAL,
+    id  BIGINT NOT NULL,
     PRIMARY KEY (id)
 );
 
-CREATE TABLE order
+CREATE TABLE "order"
 (
     id          BIGINT NOT NULL,
     user_id     BIGINT UNIQUE NOT NULL,
