@@ -13,10 +13,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import com.userservice.kafka.event.UserEvent;
-
 @Configuration
-public class KafkaProducerConfig {
+public class ProducerConfiguration {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;

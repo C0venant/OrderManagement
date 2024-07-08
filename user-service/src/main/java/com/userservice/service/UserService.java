@@ -18,6 +18,7 @@ import com.userservice.entity.Role;
 import com.userservice.entity.User;
 import com.userservice.exception.EmailAlreadyInUseException;
 import com.userservice.exception.UserNotFoundException;
+import com.userservice.kafka.service.UserEventService;
 import com.userservice.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final UserEventService userEventService;
 
     @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
@@ -71,6 +74,7 @@ public class UserService {
         log.info("Deleting user with id: {}", id);
         User user = findUserById(id);
         userRepository.delete(user);
+        userEventService.sendUserRemovedEvent(user);
         log.info("Deleted user with id: {}", id);
     }
 
@@ -121,6 +125,7 @@ public class UserService {
     private User addUser(User user) {
         User result = userRepository.save(user);
         log.info("User added with id: {}", result.getId());
+        userEventService.sendUserCreatedEvent(result);
         return result;
     }
 

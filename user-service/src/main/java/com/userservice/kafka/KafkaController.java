@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.userservice.kafka.event.UserEvent;
-import com.userservice.kafka.producer.UserCreatedEventProducer;
+import com.userservice.kafka.producer.UserEventProducer;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,15 +15,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class KafkaController {
 
-    private final UserCreatedEventProducer userCreatedEventProducer;
+    private final UserEventProducer userEventProducer;
 
     @PostMapping("create")
     public void sendMessage() {
-        userCreatedEventProducer.sendMessage(Map.of("id", "1"));
+        userEventProducer.sendUserCreatedEvent(Map.of("id", "1"));
     }
 
     @PostMapping("remove")
     public void removeMessage() {
-        userCreatedEventProducer.removeMessage(Map.of("id", "2"));
+        userEventProducer.sendRemovedEvent(Map.of("id", "2"));
     }
 }

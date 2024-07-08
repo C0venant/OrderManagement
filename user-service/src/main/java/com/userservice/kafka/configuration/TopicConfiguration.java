@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaAdmin;
 
 @Configuration
-public class KafkaTopicConfig {
+public class TopicConfiguration {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
