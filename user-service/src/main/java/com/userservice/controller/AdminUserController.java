@@ -3,6 +3,7 @@ package com.userservice.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,8 +18,10 @@ import com.userservice.dto.UserDto;
 import com.userservice.service.UserService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/admin/users")
@@ -32,7 +35,7 @@ public class AdminUserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable long id) {
+    public ResponseEntity<UserDto> getUserById(@NotNull @PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
@@ -47,8 +50,8 @@ public class AdminUserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable long id) {
-        userService.deleteUserById(id);
+    public ResponseEntity<Void> removeUser(@NotNull @PathVariable Long id) {
+        userService.removeUserById(id);
         return ResponseEntity.noContent().build();
     }
 

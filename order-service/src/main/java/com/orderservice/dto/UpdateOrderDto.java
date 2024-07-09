@@ -1,4 +1,6 @@
 package com.orderservice.dto;
 
-public record UpdateOrderDto(Long id, String product, Integer quantity) {
+import jakarta.validation.constraints.NotNull;
+
+public record UpdateOrderDto(@NotNull Long id, @NotNull String product, @NotNull Integer quantity) {
 }

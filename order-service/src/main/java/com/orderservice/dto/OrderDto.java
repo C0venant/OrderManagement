@@ -2,7 +2,10 @@ package com.orderservice.dto;
 
 import com.orderservice.entity.Order;
 
-public record OrderDto(Long id, Long userId, String product, Integer quantity, Order.Status status) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record OrderDto(Long id, Long userId, @NotBlank String product, @NotNull Integer quantity, Order.Status status) {
 
     public static OrderDto of(Order order) {
         return new OrderDto(order.getId(),
@@ -11,5 +14,4 @@ public record OrderDto(Long id, Long userId, String product, Integer quantity, O
                 order.getQuantity(),
                 order.getStatus());
     }
-
 }

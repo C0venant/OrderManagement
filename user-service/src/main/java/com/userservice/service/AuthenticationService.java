@@ -10,7 +10,6 @@ import com.userservice.dto.AuthenticateUserDto;
 import com.userservice.dto.RegisterUserDto;
 import com.userservice.dto.TokenDto;
 import com.userservice.dto.UserDto;
-import com.userservice.dto.UserEmailDto;
 import com.userservice.entity.User;
 import com.userservice.security.service.JwtService;
 
@@ -42,11 +41,11 @@ public class AuthenticationService {
         return new TokenDto(jwt);
     }
 
-    public UserEmailDto validateToken(String token) {
+    public UserDto validateToken(String token) {
         String userEmail = jwtService.extractUsername(token);
         UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
         if (jwtService.isTokenValid(token, userDetails)) {
-            return new UserEmailDto(userEmail);
+            return UserDto.of(userService.getUserByEmail(userEmail));
         }
         throw new RuntimeException("Invalid token");
     }

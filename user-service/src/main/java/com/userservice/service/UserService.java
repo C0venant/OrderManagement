@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ import com.userservice.entity.Role;
 import com.userservice.entity.User;
 import com.userservice.exception.EmailAlreadyInUseException;
 import com.userservice.exception.UserNotFoundException;
-import com.userservice.kafka.service.UserEventService;
+import com.userservice.eventprocessing.service.UserEventService;
 import com.userservice.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -61,7 +60,7 @@ public class UserService {
 
     @Transactional
     public UserDto createUser(CreateUserDto createUserDto) {
-        log.info("Creating user: {}", createUserDto);
+        log.info("Create user: {}", createUserDto);
         checkIfUserExists(createUserDto.email());
         User user = new User();
         BeanUtils.copyProperties(createUserDto, user, "password");
@@ -70,17 +69,17 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUserById(Long id) {
-        log.info("Deleting user with id: {}", id);
+    public void removeUserById(Long id) {
+        log.info("Remove user with id: {}", id);
         User user = findUserById(id);
         userRepository.delete(user);
         userEventService.sendUserRemovedEvent(user);
-        log.info("Deleted user with id: {}", id);
+        log.info("Removed user with id: {}", id);
     }
 
     @Transactional
     public UserDto updateUser(UserDto userDto) {
-        log.info("Updating user: {}", userDto);
+        log.info("Update user: {}", userDto);
         User user = findUserById(userDto.id());
         if (isNewEmail(user.getEmail(), userDto.email())) {
             checkIfUserExists(userDto.email()); //check if new email is in use
@@ -91,7 +90,7 @@ public class UserService {
 
     @Transactional
     public User registerUser(RegisterUserDto registerUserDto) {
-        log.info("Registering user with email: {}", registerUserDto.email());
+        log.info("Register user with email: {}", registerUserDto.email());
         checkIfUserExists(registerUserDto.email());
         User user = new User();
         BeanUtils.copyProperties(registerUserDto, user, "password");

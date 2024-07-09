@@ -1,4 +1,4 @@
-package com.userservice.kafka.configuration;
+package com.userservice.eventprocessing.configuration;
 
 import java.util.HashMap;
 import java.util.Map;

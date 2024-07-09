@@ -1,4 +1,4 @@
-package com.userservice.kafka.producer;
+package com.userservice.eventprocessing.producer;
 
 import java.util.Map;
 

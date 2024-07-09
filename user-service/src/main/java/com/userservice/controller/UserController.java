@@ -10,6 +10,7 @@ import com.userservice.dto.UpdateUserDto;
 import com.userservice.dto.UserDto;
 import com.userservice.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -20,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @PutMapping("/me")
-    public ResponseEntity<UserDto> updateUser(@RequestBody UpdateUserDto updateUserDto) {
+    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UpdateUserDto updateUserDto) {
         return ResponseEntity.ok(userService.updateUser(updateUserDto));
     }
 

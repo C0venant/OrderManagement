@@ -1,11 +1,11 @@
-package com.userservice.kafka.service;
+package com.userservice.eventprocessing.service;
 
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.userservice.entity.User;
-import com.userservice.kafka.producer.UserEventProducer;
+import com.userservice.eventprocessing.producer.UserEventProducer;
 
 import lombok.RequiredArgsConstructor;
 

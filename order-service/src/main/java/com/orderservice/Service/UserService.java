@@ -1,11 +1,11 @@
 package com.orderservice.Service;
 
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.orderservice.entity.User;
+import com.orderservice.exception.UserNotFoundException;
 import com.orderservice.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,12 +24,8 @@ public class UserService {
         userRepository.delete(getUser(userData));
     }
 
-    public boolean isUserPresent(Long userId) {
-        return userRepository.existsById(userId);
-    }
-
     public User getUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow();
+        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     private User getUser(Map<String, String> userData) {

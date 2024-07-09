@@ -1,7 +1,7 @@
 package com.userservice.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,12 +12,13 @@ import com.userservice.dto.AuthenticateUserDto;
 import com.userservice.dto.RegisterUserDto;
 import com.userservice.dto.TokenDto;
 import com.userservice.dto.UserDto;
-import com.userservice.dto.UserEmailDto;
 import com.userservice.service.AuthenticationService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
@@ -36,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/validate/{token}")
-    public ResponseEntity<UserEmailDto> validateToken(@PathVariable String token) {
+    public ResponseEntity<UserDto> validateToken(@NotNull @PathVariable String token) {
         return ResponseEntity.ok(authenticationService.validateToken(token));
     }
 }

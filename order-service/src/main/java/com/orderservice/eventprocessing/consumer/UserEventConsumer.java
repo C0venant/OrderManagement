@@ -1,4 +1,4 @@
-package com.orderservice.kafka.consumer;
+package com.orderservice.eventprocessing.consumer;
 
 import java.util.Map;
 
@@ -6,8 +6,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 import com.orderservice.Service.UserService;
-import com.orderservice.entity.User;
-import com.orderservice.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +30,6 @@ public class UserEventConsumer {
             groupId = "${message.group}")
     public void removeUserListener(Map<String, String> userEvent) {
         log.info("Received user removed event: {}", userEvent);
-        userService.addUser(userEvent);
+        userService.removeUser(userEvent);
     }
 }

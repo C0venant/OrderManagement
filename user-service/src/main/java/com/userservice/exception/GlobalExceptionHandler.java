@@ -1,4 +1,4 @@
-package com.userservice.controller;
+package com.userservice.exception;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.userservice.dto.ErrorDto;
-import com.userservice.exception.EmailAlreadyInUseException;
-import com.userservice.exception.UserNotFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

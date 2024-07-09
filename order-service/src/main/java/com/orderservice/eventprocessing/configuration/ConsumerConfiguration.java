@@ -1,4 +1,4 @@
-package com.orderservice.kafka.configuration;
+package com.orderservice.eventprocessing.configuration;
 
 import java.util.HashMap;
 import java.util.Map;
