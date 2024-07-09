@@ -12,9 +12,27 @@ spring:
         - id: order-service
           uri: lb://order-service
           predicates:
-            - Path=/api/test
+            - Path=/api/v1/orders/**
           filters:
             - AuthenticationFilter
+
+        - id: auth-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/auth/**
+
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/users/**
+
+        - id: admin-user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/admin/users/**
+
+user-service:
+  base-url: http://localhost:8000
 
 server:
   port: 8765

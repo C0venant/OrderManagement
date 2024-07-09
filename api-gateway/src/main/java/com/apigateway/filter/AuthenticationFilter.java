@@ -1,8 +1,12 @@
 package com.apigateway.filter;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -10,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ServerWebExchange;
+
+import com.apigateway.dto.UserDto;
 
 import lombok.Setter;
 import reactor.core.publisher.Mono;
@@ -23,6 +29,9 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     @Setter(onMethod_={@Autowired})
     private RestTemplate restTemplate;
 
+    @Value("${user-service.base-url}")
+    private String userServiceUrl;
+
     public AuthenticationFilter() {
         super(Config.class);
     }
@@ -31,27 +40,41 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
             if (routeValidator.isSecured.test(exchange.getRequest())) {
-                //check header contains token
+                //check if header contains token
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                    return unuthorizedResponse(exchange);
+                    return unauthorizedResponse(exchange);
                 }
                 String token = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
                 if (token != null && token.startsWith("Bearer ")) {
                     token = token.substring(7);
                 }
                 try {
-                    //extract URI
-                    ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:8000/api/v1/auth/validate/" + token, null, String.class, HttpMethod.POST);
-                    //setIdHere
+                    String userId = getUserId(validateUserTokenAndGetDetails(token));
+                    exchange.getRequest().mutate().header("user-id", userId).build();
                 } catch (Exception e) {
-                    return unuthorizedResponse(exchange);
+                    return unauthorizedResponse(exchange);
                 }
             }
             return chain.filter(exchange);
         });
     }
 
-    private Mono<Void> unuthorizedResponse(ServerWebExchange exchange) {
+    private ResponseEntity<UserDto> validateUserTokenAndGetDetails(String token) {
+        return  restTemplate.postForEntity(String.format("%s/api/v1/auth/validate/%s", userServiceUrl, token),
+                null,
+                UserDto.class,
+                HttpMethod.POST);
+    }
+
+    private String getUserId(ResponseEntity<UserDto> userDtoResponseEntity) {
+        return Optional.of(userDtoResponseEntity)
+                .map(HttpEntity::getBody)
+                .map(UserDto::id)
+                .map(String::valueOf)
+                .orElseThrow(() -> new RuntimeException("Couldn't get user data"));
+    }
+
+    private Mono<Void> unauthorizedResponse(ServerWebExchange exchange) {
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
         return exchange.getResponse().setComplete();
     }

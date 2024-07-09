@@ -47,6 +47,11 @@ public class UserService {
         return UserDto.of(findUserById(id));
     }
 
+    @Transactional(readOnly = true)
+    public UserDto getCurrentUser() {
+        return UserDto.of(getUserByEmail(getCurrentUserEmail()));
+    }
+
     @Transactional
     public UserDto updateUser(UpdateUserDto updateUserDto) {
         String email = getCurrentUserEmail();
