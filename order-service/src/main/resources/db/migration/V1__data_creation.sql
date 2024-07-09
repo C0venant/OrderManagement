@@ -9,7 +9,7 @@ CREATE TABLE "user"
 CREATE TABLE "order"
 (
     id          BIGINT NOT NULL,
-    user_id     BIGINT UNIQUE NOT NULL,
+    user_id     BIGINT NOT NULL,
     product     VARCHAR(255),
     status      VARCHAR(255),
     quantity    INT,

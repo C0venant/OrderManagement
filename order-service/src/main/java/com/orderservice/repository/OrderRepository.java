@@ -14,6 +14,4 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByIdAndUserId(Long orderId, Long userId);
 
     void deleteByIdAndUserId(Long id, Long userId);
-
-    void deleteByUserId(Long userId);
 }

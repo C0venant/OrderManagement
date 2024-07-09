@@ -26,7 +26,7 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUser(updateUserDto));
     }
 
-    @GetMapping()
+    @GetMapping("/me")
     public ResponseEntity<UserDto> getUserCurrent() {
         return ResponseEntity.ok(userService.getCurrentUser());
     }

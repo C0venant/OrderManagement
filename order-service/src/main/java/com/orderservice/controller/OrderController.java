@@ -11,29 +11,32 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.orderservice.Service.OrderService;
 import com.orderservice.dto.OrderDto;
 import com.orderservice.dto.UpdateOrderDto;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 
 @Validated
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/orders")
 public class OrderController {
 
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<OrderDto> addOrder(@NotNull @RequestHeader("user-id") Long userId, @NotNull @RequestBody OrderDto order) {
+    public ResponseEntity<OrderDto> addOrder(@NotNull @RequestHeader("user-id") Long userId, @Valid @RequestBody OrderDto order) {
         return ResponseEntity.ok(orderService.addOrder(userId, order));
     }
 
     @PutMapping
-    public ResponseEntity<OrderDto> updateOrder(@NotNull @RequestHeader("user-id") Long userId, @RequestBody UpdateOrderDto order) {
+    public ResponseEntity<OrderDto> updateOrder(@NotNull @RequestHeader("user-id") Long userId, @Valid @RequestBody UpdateOrderDto order) {
         return ResponseEntity.ok(orderService.updateUserOrder(userId, order));
     }
 
@@ -43,7 +46,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDto> getOrders(@NotNull @RequestHeader("user-id") Long userId, @NotNull @PathVariable Long id) {
+    public ResponseEntity<OrderDto> getOrder(@NotNull @RequestHeader("user-id") Long userId, @NotNull @PathVariable Long id) {
         return ResponseEntity.ok(orderService.getUserOrder(userId, id));
     }
 

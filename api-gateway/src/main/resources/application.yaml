@@ -29,7 +29,7 @@ spring:
         - id: admin-user-service
           uri: lb://user-service
           predicates:
-            - Path=/api/admin/users/**
+            - Path=/api/v1/admin/users/**
 
 user-service:
   base-url: http://localhost:8000

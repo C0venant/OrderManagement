@@ -18,12 +18,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 
-@Entity
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name = "\"order\"")
 @SequenceGenerator(name = "order_seq", sequenceName = "order_sequence", allocationSize = 10)
 public class Order {
 

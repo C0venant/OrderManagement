@@ -54,7 +54,9 @@ public class OrderService {
     @Transactional
     public OrderDto updateUserOrder(Long userId, UpdateOrderDto orderDto) {
         log.info("Update order: {}", orderDto);
-        Order order = orderRepository.findByIdAndUserId(orderDto.id(), userId).orElseThrow();
+        Order order = orderRepository
+                .findByIdAndUserId(orderDto.id(), userId)
+                .orElseThrow(() -> new OrderNotFoundException(orderDto.id(), userId));
         BeanUtils.copyProperties(orderDto, order);
         return OrderDto.of(order);
     }
