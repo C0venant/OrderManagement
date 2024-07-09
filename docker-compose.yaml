@@ -12,6 +12,8 @@ services:
       - "5432:5432"
     volumes:
       - user-db-data:/var/lib/postgresql/data
+    networks:
+      - backend
 
   order-db:
     image: postgres:latest
@@ -24,6 +26,8 @@ services:
       - "5433:5432"
     volumes:
       - order-db-data:/var/lib/postgresql/data
+    networks:
+      - backend
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -32,6 +36,8 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2181"
+    networks:
+      - backend
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -39,11 +45,45 @@ services:
       - zookeeper
     ports:
       - "9092:9092"
+      - "29092:29092"
+      - "9999:9999"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:19092,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092,DOCKER://host.docker.internal:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - backend
+
+#  user-service:
+#    image: user-service:latest
+#    container_name: user-service
+#    depends_on:
+#      - user-db
+#      - kafka
+#      - naming-server
+#    ports:
+#      - "8000:8000"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5432/userdb
+#      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://naming-server:8761/eureka/
+#    networks:
+#      - backend
+#
+#  naming-server:
+#    image: naming-server:latest
+#    container_name: naming-server
+#    ports:
+#      - "8761:8761"
+#    networks:
+#      - backend
+
+networks:
+  backend:
+    driver: bridge
 
 volumes:
   user-db-data:
