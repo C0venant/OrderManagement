@@ -39,21 +39,19 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     @Override
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
-            if (routeValidator.isSecured.test(exchange.getRequest())) {
-                //check if header contains token
-                if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                    return unauthorizedResponse(exchange);
-                }
-                String token = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-                if (token != null && token.startsWith("Bearer ")) {
-                    token = token.substring(7);
-                }
-                try {
-                    String userId = getUserId(validateUserTokenAndGetDetails(token));
-                    exchange.getRequest().mutate().header("user-id", userId).build();
-                } catch (Exception e) {
-                    return unauthorizedResponse(exchange);
-                }
+            //check if header contains token
+            if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+                return unauthorizedResponse(exchange);
+            }
+            String token = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+            if (token != null && token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+            try {
+                String userId = getUserId(validateUserTokenAndGetDetails(token));
+                exchange.getRequest().mutate().header("user-id", userId).build();
+            } catch (Exception e) {
+                return unauthorizedResponse(exchange);
             }
             return chain.filter(exchange);
         });
