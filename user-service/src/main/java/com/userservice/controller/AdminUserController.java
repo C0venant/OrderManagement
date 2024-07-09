@@ -17,6 +17,7 @@ import com.userservice.dto.CreateUserDto;
 import com.userservice.dto.UserDto;
 import com.userservice.service.UserService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/admin/users")
+@SecurityRequirement(name = "bearerAuth")
 public class AdminUserController {
 
     private final UserService userService;

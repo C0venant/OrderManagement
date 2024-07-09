@@ -11,12 +11,14 @@ import com.userservice.dto.UpdateUserDto;
 import com.userservice.dto.UserDto;
 import com.userservice.service.UserService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
 //@Cacheable("myCache")
     private final UserService userService;

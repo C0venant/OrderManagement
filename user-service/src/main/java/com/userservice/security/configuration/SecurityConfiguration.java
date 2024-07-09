@@ -27,7 +27,7 @@ public class SecurityConfiguration {
 
     private final AuthenticationProvider authenticationProvider;
 
-    private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**", "/v3/api-docs/**", "/swagger-ui/**"};
+    private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**", "/users/v3/api-docs/**", "/users/swagger-ui/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
