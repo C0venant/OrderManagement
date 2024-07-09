@@ -38,6 +38,7 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public List<OrderDto> getUserOrders(Long userId) {
+        userService.getUserById(userId);
         return orderRepository.findByUserId(userId)
                 .stream()
                 .map(OrderDto::of)
@@ -64,6 +65,7 @@ public class OrderService {
     @Transactional
     public void removeUserOrder(Long userId, Long orderId) {
         log.info("Remove order: {}", orderId);
+        getUserOrder(userId, orderId);
         orderRepository.deleteByIdAndUserId(orderId, userId);
         log.info("Removed order: {}", orderId);
     }
