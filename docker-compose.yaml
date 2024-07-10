@@ -73,7 +73,7 @@ services:
       - kafka
       - naming-server
     ports:
-      - "8000:8000"
+      - "8000"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5432/userdb
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
@@ -89,7 +89,7 @@ services:
       - kafka
       - naming-server
     ports:
-      - "8100:8100"
+      - "8100"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://order-db:5432/orderdb
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
