@@ -2,6 +2,8 @@
 
 Order management project consists of two microservices (`user-service` and `order-service`), along with two additional projects: `api-gateway` and `naming-server`. The services are built using Spring Boot and communicate via Kafka. PostgreSQL with Flyway is used for database management, and Spring Cloud facilitates service discovery and configuration management.
 
+![Diagram](diagram.png "Diagram")
+
 ## Technology Stack
 
 - **Java**: Version 21
