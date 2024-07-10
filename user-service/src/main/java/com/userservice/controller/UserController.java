@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/users")
 @SecurityRequirement(name = "bearerAuth")
 public class UserController {
-//@Cacheable("myCache")
+
     private final UserService userService;
 
     @PutMapping("/me")
