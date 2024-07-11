@@ -4,6 +4,8 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.5"
 }
 
+val openApiVersion = "2.5.0"
+
 group = "com"
 version = "0.0.1-SNAPSHOT"
 
@@ -22,7 +24,7 @@ extra["springCloudVersion"] = "2023.0.2"
 dependencies {
 	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
-	implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.0.4")
+	implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:$openApiVersion")
 	implementation("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
