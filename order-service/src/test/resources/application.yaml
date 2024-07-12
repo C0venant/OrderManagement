@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: order-service
+  jpa:
+    generate-ddl: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+message:
+  group: orderGroup
+  topic:
+    create-user: test-user-create-topic
+    remove-user: test-user-remove-topic
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+
+springdoc:
+  api-docs:
+    path: /orders/v3/api-docs
+  swagger-ui:
+    path: /orders/swagger-ui.html
