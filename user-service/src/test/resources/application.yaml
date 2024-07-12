@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: user-service
+
+  jpa:
+    generate-ddl: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+message:
+  topic:
+    create-user: test-user-create-topic
+    remove-user: test-user-remove-topic
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+
+cache:
+  user-cache: userCache
+  time-to-live: 1440
+
+springdoc:
+  api-docs:
+    path: /users/v3/api-docs
+  swagger-ui:
+    path: /users/swagger-ui.html
+
+jwt:
+  secret: "MIICzTBLBgkqhkiG9w0BBQ0wPjApBgkqhkiG9w0BBQwwHAQI1M8uVZ0qac0CAggA"
+  expiration: 1440000
