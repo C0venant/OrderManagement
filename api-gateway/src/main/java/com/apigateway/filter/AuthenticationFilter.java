@@ -24,9 +24,6 @@ import reactor.core.publisher.Mono;
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
 
     @Setter(onMethod_={@Autowired})
-    private RouteValidator routeValidator;
-
-    @Setter(onMethod_={@Autowired})
     private RestTemplate restTemplate;
 
     @Value("${user-service.base-url}")
